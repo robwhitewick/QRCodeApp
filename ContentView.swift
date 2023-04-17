@@ -14,9 +14,7 @@ class ViewModel: ObservableObject {
 
 struct ContentView: View {
     @State var website = ""
-    @State var qrCodeImage = UIImage(systemName:"video")!
-    @State var gotImage = false
-    @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var vm: ViewModel //first time using enviromental objects im sure this isnt the correct way to do it but it works.
     
     var body: some View {
         NavigationView {
@@ -36,36 +34,27 @@ struct ContentView: View {
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 250,height: 250)
                         .background(Color.gray)
-                }
-                
+                } // surely there is a better option than to use an if else statement here?
                 
                 
                 Button {
-                    print("Hellow world")
                     @State var data:Data?
                     var url = "https://www.qrtag.net/api/qr.png?url=https://"+website
-                    print(url)
                     URLSession.shared.dataTask(with: NSURL(string: url)! as URL, completionHandler: { (data, response, error) -> Void in
-
                                 if error != nil {
                                     print(error ?? "No Error")
                                     return
                                 }
                                 DispatchQueue.main.async(execute: { () -> Void in
                                     let image = UIImage(data: data!)
-                                    vm.image = nil
                                     vm.image = image
                                 })
-
-                            }).resume()
+                            }).resume()// url session function taken from stack overflow. The DispatchQueue is used to update the UI but was a pain to figure out
                 } label: {
                     Text("GenerateQR Code")
                 }
-                
-                
+
                 Spacer()
-                
-                
                 
             }
         }
@@ -82,6 +71,6 @@ struct ContentView_Previews: PreviewProvider {
 
 struct Previews_ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+        Text("Hello, World!")
     }
 }

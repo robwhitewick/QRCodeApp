@@ -12,7 +12,7 @@ struct apicallsApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(ViewModel())
+                .environmentObject(ViewModel())//this needs to be here for the enviromental object to work not entirely sure why.
         }
     }
 }
